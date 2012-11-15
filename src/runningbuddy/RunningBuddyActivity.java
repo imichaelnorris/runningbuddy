@@ -1,4 +1,4 @@
-package runningbuddy;
+package com.cenotesoftware.runningbuddy;
 
 
 import android.app.Activity;
@@ -83,6 +83,10 @@ public class RunningBuddyActivity extends Activity {
 		 */
 		distanceTraveledValue = 0.0;
 		
+		/**
+		 * Unbundle the distanceTraveled if it has been bundled from
+		 * onSaveInstanceState.
+		 */
 		if (savedInstanceState != null)
 		{
 			if (savedInstanceState.containsKey("distanceTraveled"))
@@ -90,6 +94,9 @@ public class RunningBuddyActivity extends Activity {
 		}
     }
     
+    /**
+     * Called when the phone's orientation changes.
+     */
     @Override
 	public void onSaveInstanceState(Bundle output)
 	{
@@ -112,16 +119,15 @@ public class RunningBuddyActivity extends Activity {
 			
 			if (previousLocation != null)
 			{
-				if (previousLocation == loc)
+				if (previousLocation == loc) //If true, we have not moved.
 				{
-					//there's nothing to do if we have not moved.
 					return;
 				}
-
+				//GPS has built-in
 				else// (loc.distanceTo(previousLocation) > 1.0d)
 				{
 					//distance defined using the WGS84 ellipsoid
-					// - error < 2cm
+					// -- error < 2cm
 					distanceTraveledValue += Math.abs(loc.distanceTo(previousLocation));
 					previousLocation = new Location(loc);
 					distanceTraveled.setText(Double.toString(((int)distanceTraveledValue)) + " meters");
